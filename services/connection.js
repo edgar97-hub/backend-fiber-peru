@@ -25,8 +25,11 @@ const options = {
   dbName: "erpdb",
 };
 
+var url =
+  "mongodb+srv://edgar:Poly123.wqz@cluster0.xziwwxk.mongodb.net/?retryWrites=true&w=majority";
+
 mongoose
-  .connect("mongodb://AdminCherry:qwerty@127.0.0.1:27017", options)
+  .connect(url, options)
   .then(() => {
     console.log("connected to mongoDB");
 

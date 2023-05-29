@@ -29,7 +29,7 @@ app.use(expressValidator());
 require("./services/connection");
 
 //import files
-//var publicRoutes = require("./routes/public");
+var publicRoutes = require("./routes/public");
 var login = require("./routes/login");
 //var adminLogin = require('./routes/adminLogin');
 //var admin = require('./routes/admin');
@@ -46,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //bind routes
-//app.use('/api/v1/public',publicRoutes);
+app.use('/api/v1/public',publicRoutes);
 app.use("/api/v1/login", login);
 //app.use('/api/v1/adminlogin',adminLogin);
 //app.use('/api/v1/admin',passport.authenticate('admin-token', {session:false}),admin);

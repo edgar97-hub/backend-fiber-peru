@@ -11,16 +11,18 @@ var config = require("config");
 var userModel = require("../models/user");
 
 var localStrategyOption = {
-  usernameField: "email",
+  documentNumberField: "documentNumber",
   passwordField: "password",
   passReqToCallback: true,
 };
 
-function localStrategyVerify(req, email, password, done) {
+function localStrategyVerify(documentNumber, password, done) {
   //var data = await userModel.findOne({ email: email });
-  console.log("test1", email);
+  console.log("localStrategyVerify", req);
 
-  userModel.findOne({ email: email }, (err, user) => {
+  userModel.findOne({ documentnumber: documentNumber }, (err, user) => {
+    console.log("localStrategyVerify", documentNumber);
+
     //  database server error
     if (err) {
       return done(err, false, {

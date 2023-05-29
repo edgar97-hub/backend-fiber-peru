@@ -5,7 +5,9 @@ var config = require("config");
 var passport = require("./passportconf");
 
 var userLogin = (req, res, next) => {
-  req.check("email", "Invalid email address").isEmail().notEmpty();
+  req
+    .check("documentNumber", "Invalid document Number")
+    .isLength({ min: 8, max: 8 });
   req.check("password", "Invalid password").isLength({ min: 4, max: 20 });
 
   var errors = req.validationErrors();
@@ -17,7 +19,9 @@ var userLogin = (req, res, next) => {
       errors: errors,
     });
   } else {
+    console.log("passport.authenticate");
     passport.authenticate("login", { session: false }, (err, user, info) => {
+      console.log(user, err, info);
       if (err || !user) {
         res.json(info);
       } else {
@@ -36,10 +40,10 @@ var userLogin = (req, res, next) => {
             success: true,
             message: "login successful",
             user: {
-              username: user.username,
+              // username: user.username,
               type: user.usertype,
               _id: user._id,
-              email: user.email,
+              // email: user.email,
             },
             token: token,
           });

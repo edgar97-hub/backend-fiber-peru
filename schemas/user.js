@@ -1,36 +1,41 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var userSchema = new mongoose.Schema({
-  username : {
-    type : String,
-    required : true
+var userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: false,
+    },
+    documenttype: {
+      type: String,
+      required: false,
+    },
+    documentnumber: {
+      type: Number,
+      required: false,
+      unique: false,
+    },
+    usertype: {
+      type: String,
+      enum: ["user", "administrator"],
+      required: false,
+    },
+    password: {
+      type: String,
+      required: false,
+    },
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    // createdBy : {
+    //   type : mongoose.Schema.Types.ObjectId,
+    //   ref : 'adminModel'
+    // }
   },
-  email : {
-    type : String,
-    required : true,
-    unique : true
-  },
-  // usertype : {
-  //   type : String,
-  //   enum : ['TEACHER', 'STUDENT'],
-  //   required : true 
-  // },
-  password : {
-    type : String,
-    required : true
-  },
-  status : {
-    type : Boolean,
-    default : true
-  },
-  // createdBy : {
-  //   type : mongoose.Schema.Types.ObjectId,
-  //   ref : 'adminModel'
-  // }
+  {
+    timestamps: {},
+  }
+);
 
-},
-{
-  timestamps:{}
-})
-
-module.exports = userSchema
+module.exports = userSchema;
