@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-
 var config = require("config");
-
+var userModel = require("../models/user");
 var passport = require("./passportconf");
+const bcrypt = require("bcrypt");
 
 var userLogin = (req, res, next) => {
   req
@@ -20,36 +20,85 @@ var userLogin = (req, res, next) => {
     });
   } else {
     console.log("passport.authenticate");
-    passport.authenticate("login", { session: false }, (err, user, info) => {
-      console.log(user, err, info);
-      if (err || !user) {
-        res.json(info);
-      } else {
-        req.login({ _id: user._id }, { session: false }, (err) => {
-          if (err) {
-            res.json({
-              success: false,
-              message: "server error",
-            });
-          }
+    // passport.authenticate("login", { session: false }, (err, user, info) => {
+    //   console.log(user, err, info);
+    //   if (err || !user) {
+    //     res.json(info);
+    //   } else {
+    //     req.login({ _id: user._id }, { session: false }, (err) => {
+    //       if (err) {
+    //         res.json({
+    //           success: false,
+    //           message: "server error",
+    //         });
+    //       }
 
-          var token = jwt.sign({ _id: user._id }, config.get("jwt.secret"), {
-            expiresIn: "1d",
-          });
-          res.json({
-            success: true,
-            message: "login successful",
-            user: {
-              // username: user.username,
-              type: user.usertype,
-              _id: user._id,
-              // email: user.email,
-            },
-            token: token,
-          });
+    //       var token = jwt.sign({ _id: user._id }, config.get("jwt.secret"), {
+    //         expiresIn: "1d",
+    //       });
+    //       res.json({
+    //         success: true,
+    //         message: "login successful",
+    //         user: {
+    //           // username: user.username,
+    //           type: user.usertype,
+    //           _id: user._id,
+    //           // email: user.email,
+    //         },
+    //         token: token,
+    //       });
+    //     });
+    //   }
+    // })(req, res, next);
+    var documentNumber = req.body.documentNumber;
+    var password = req.body.password;
+
+    userModel.findOne({ documentnumber: documentNumber }, (err, user) => {
+      console.log("localStrategyVerify", documentNumber);
+
+      //  database server error
+      if (err) {
+
+        res.json({
+          success: false,
+          message: "server error", user: {
+            type: user.usertype,
+            _id: user._id,
+          },
+          token: token,
         });
       }
-    })(req, res, next);
+
+      // user not found
+      if (!user) {
+
+        res.json({
+          success: false,
+          message: "email is not registered",
+        });
+      } else if (user.status == false) {
+
+        res.json({
+          success: false,
+          message: "your account is blocked",
+        });
+      } else {
+        //check for password
+        bcrypt.compare(password, user.password).then((result) => {
+          if (result) {
+            res.json({
+              success: true,
+              message: "logged in successfully",
+            });
+          } else {
+            res.json({
+              success: false,
+              message: "invalid password",
+            });
+          }
+        });
+      }
+    });
   }
 };
 

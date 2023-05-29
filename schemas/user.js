@@ -2,10 +2,10 @@ var mongoose = require("mongoose");
 
 var userSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
-      required: false,
-    },
+    // username: {
+    //   type: String,
+    //   required: false,
+    // },
     documenttype: {
       type: String,
       required: false,
@@ -28,6 +28,7 @@ var userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
     // createdBy : {
     //   type : mongoose.Schema.Types.ObjectId,
     //   ref : 'adminModel'

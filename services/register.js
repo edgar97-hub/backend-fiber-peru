@@ -24,7 +24,7 @@ var studentRegister = (req, res, next) => {
       .findOne({ documentnumber: documentNumber })
       .then((user) => {
         //user already exists
-        console.log("user: " + user);
+        console.log("user exist: " + user);
 
         if (user) {
           res.status(400).json({
@@ -36,19 +36,15 @@ var studentRegister = (req, res, next) => {
           tool
             .hashPassword(password)
             .then((hash) => {
-              console.log({
-                documentnumber: documentNumber,
-                password: hash,
-                documenttype: documentType,
-                usertype: "administrator",
-              });
-              var tempdata = new userModel({
+
+              var data = new userModel({
                 documentnumber: documentNumber,
                 password: hash,
                 documenttype: documentType,
                 usertype: "user",
               });
-              tempdata
+
+              data
                 .save()
                 .then(() => {
                   res.json({
@@ -57,6 +53,7 @@ var studentRegister = (req, res, next) => {
                   });
                 })
                 .catch((err) => {
+                  console.log("test-1", err)
                   res.status(500).json({
                     success: false,
                     message: "Unable to register Profile",
@@ -64,6 +61,7 @@ var studentRegister = (req, res, next) => {
                 });
             })
             .catch((err) => {
+              console.log("test-2")
               res.status(500).json({
                 success: false,
                 message: "Unable to register Profile",
@@ -72,6 +70,7 @@ var studentRegister = (req, res, next) => {
         }
       })
       .catch((err) => {
+        console.log("test-3")
         res.status(500).json({
           success: false,
           message: "Unable to register profile",
