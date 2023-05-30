@@ -1,37 +1,42 @@
 var mongoose = require("mongoose");
 
-var inquirySchema  = new mongoose.Schema(
+var userSchema = new mongoose.Schema(
   {
     // username: {
     //   type: String,
     //   required: false,
     // },
+    distrito: {
+      type: String,
+      required: false,
+    },
+    fullname: {
+      type: String,
+      required: false,
+      unique: false,
+    },
+    
     documenttype: {
       type: String,
       required: false,
     },
     documentnumber: {
-      type: Number,
+      type: String,
       required: false,
       unique: false,
-    },
-    usertype: {
-      type: String,
-      enum: ["user", "administrator"],
-      required: false,
-    },
-    password: {
-      type: String,
-      required: false,
-    },
-    status: {
-      type: Boolean,
-      default: true,
     },
     email: {
       type: String,
       unique: false,
       default: "",
+    },
+    mobile: {
+      type: String,
+      unique: false,
+    },
+    message: {
+      type: String,
+      unique: false,
     },
 
     // createdBy : {
@@ -44,4 +49,4 @@ var inquirySchema  = new mongoose.Schema(
   }
 );
 
-module.exports = inquirySchema;
+module.exports = userSchema;

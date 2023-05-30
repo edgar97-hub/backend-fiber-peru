@@ -5,7 +5,7 @@ var studentRegister = (req, res, next) => {
   req.check("documentType", "Invalid name").notEmpty();
   req
     .check("documentNumber", "Invalid document Number")
-    .isLength({ min: 8, max: 8 });
+    .isLength({ min: 8, max:11 });
   req.check("password", "Invalid Password").isLength({ min: 1, max: 20 });
 
   var errors = req.validationErrors();
@@ -19,6 +19,8 @@ var studentRegister = (req, res, next) => {
     var documentNumber = req.body.documentNumber;
     var password = req.body.password;
     var documentType = req.body.documentType;
+    var email = req.body.email;
+
     console.log(req.body);
     userModel
       .findOne({ documentnumber: documentNumber })
@@ -42,6 +44,8 @@ var studentRegister = (req, res, next) => {
                 password: hash,
                 documenttype: documentType,
                 usertype: "user",
+                email: email,
+
               });
 
               data

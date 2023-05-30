@@ -31,6 +31,8 @@ require("./services/connection");
 //import files
 var publicRoutes = require("./routes/public");
 var login = require("./routes/login");
+var users = require("./routes/user");
+
 //var adminLogin = require('./routes/adminLogin');
 //var admin = require('./routes/admin');
 var user = require("./routes/user");
@@ -48,6 +50,9 @@ app.use(passport.session());
 //bind routes
 app.use('/api/v1/public',publicRoutes);
 app.use("/api/v1/login", login);
+app.use("/api/v1/users", users);
+
+
 //app.use('/api/v1/adminlogin',adminLogin);
 //app.use('/api/v1/admin',passport.authenticate('admin-token', {session:false}),admin);
 app.use(

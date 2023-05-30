@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 var userLogin = (req, res, next) => {
   req
     .check("documentNumber", "Invalid document Number")
-    .isLength({ min: 8, max: 8 });
+    .isLength({ min: 8, max: 11 });
   req.check("password", "Invalid password").isLength({ min: 4, max: 20 });
 
   var errors = req.validationErrors();
