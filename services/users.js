@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 var getUsers = (req, res, next) => {
 	var documentNumber = req.body.documentNumber;
 	var password = req.body.password;
+	res.header("Access-Control-Allow-Origin", "*");
 	//const data = await userModel.find().toArray();
 	userModel.find({}, function (err, users) {
 		var userMap = {};
