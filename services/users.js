@@ -11,39 +11,71 @@ var getUsers = (req, res, next) => {
 	var password = req.body.password;
 	//res.header("Access-Control-Allow-Origin", "*");
 	res.set({ "Access-Control-Allow-Origin": "*" });
-	//res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-	//const data = await userModel.find().toArray();
-	userModel.find({}, function (err, users) {
-		var userMap = {};
 
-		users.forEach(function (user) {
-			userMap[user._id] = user;
+	if (!req.headers.authorization) {
+    return res.status(401).json({ error: "Not Authorized" });
+  }
+
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+	// console.log("token: "+token)
+	try {
+    // Verify the token is valid
+		var JWT_SECRET =
+		"goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu";
+
+    const { user } = jwt.verify(token, JWT_SECRET);
+
+		userModel.find({}, function (err, users) {
+			res.send({
+				success: true,
+				message: "test",
+				userMap: users,
+				message2: `Congrats ${user}! You can now accesss the super secret resource`,
+
+			});
 		});
-		res.send({
-			success: true,
-			message: "test",
-			userMap: users
-		});
-		//res.send(userMap);
-	});
+   
+  } catch (error) {
+    return res.status(401).json({ error: "Not Authorized" });
+  }
+	
 
 
 };
 
 
 var getQueries = (req, res, next) => {
-	var documentNumber = req.body.documentNumber;
-	var password = req.body.password;
-	//const data = await userModel.find().toArray();
-	inquiryModel.find({}, function (err, inquiries) {
 
+	if (!req.headers.authorization) {
+    return res.status(401).json({ error: "Not Authorized" });
+  }
 
-		res.send({
-			success: true,
-			message: "test",
-			userMap: inquiries
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+	// console.log("token: "+token)
+	try {
+
+		var JWT_SECRET =
+		"goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu";
+
+    const { user } = jwt.verify(token, JWT_SECRET);
+
+		inquiryModel.find({}, function (err, inquiries) {
+			res.send({
+				success: true,
+				message: "test",
+				userMap: inquiries
+			});
+			 
 		});
-	});
+    
+  } catch (error) {
+    return res.status(401).json({ error: "Not Authorized" });
+  }
+
+
+ 
 
 
 };

@@ -3,6 +3,8 @@ var config = require("config");
 var userModel = require("../models/user");
 var passport = require("./passportconf");
 const bcrypt = require("bcrypt");
+const jsonwebtoken = require("jsonwebtoken");
+require('dotenv').config();
 
 var userLogin = (req, res, next) => {
   req
@@ -85,9 +87,14 @@ var userLogin = (req, res, next) => {
       } else {
         //check for password
         bcrypt.compare(password, user.password).then((result) => {
+
+          var JWT_SECRET =
+            "goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu";
+
           if (result) {
             res.json({
               success: true,
+              token: jsonwebtoken.sign({ user: documentNumber }, JWT_SECRET),
               message: "logged in successfully",
             });
           } else {
